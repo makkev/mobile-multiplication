@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://ck-79p.anonymous.mobile-multiplication.exp.direct",
-  "packagerNgrokUrl": "https://packager.ck-79p.anonymous.mobile-multiplication.exp.direct",
-  "ngrokPid": 20037,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
