@@ -42,7 +42,7 @@ export default class App extends React.Component {
     for (var key in tables) {
       if (tables[key] === true) {
         questions.filter(q => 
-          q.number1 === idx || q.number2 === idx
+          q.number1 === Number(key) || q.number2 === Number(key)
         ).forEach(rec => questionsFiltered.push(rec));
       }
     }

@@ -13,7 +13,13 @@ export class Question extends Component {
   render() {
     return (
       <View>
-        <Text>{this.props.navigation.state.params.questionsFiltered}</Text>
+        {this.props.navigation.state.params.questionsFiltered.map((q, idx) => {
+          return(
+            <View key={idx}>
+              <Text>{`${q.number1} ${q.operand} ${q.number2} = ${q.correctAnswer}`}</Text>
+            </View>
+          );
+        })}
       </View>
     )
   }
