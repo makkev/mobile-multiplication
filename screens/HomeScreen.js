@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TouchableHighlight, Button, Image, ImageBackground } from 'react-native';
+import Question from './QuestionScreen';
+import {quiz} from './quiz';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,7 +25,6 @@ export default class App extends React.Component {
   }
 
   updateTables = num => {
-    // alert(num);
     this.setState({
       tables: {
         ...this.state.tables,
@@ -32,7 +33,39 @@ export default class App extends React.Component {
     })
   }
 
+  start = () => {
+    const { tables } = this.state;
+    const { questions } = quiz;
+
+    // alert(questions);
+    let questionsFiltered = [];
+    for (var key in tables) {
+      if (tables[key] === true) {
+        questions.filter(q => 
+          q.number1 === idx || q.number2 === idx
+        ).forEach(rec => questionsFiltered.push(rec));
+      }
+    }
+
+    questionsFiltered = this.shuffleQuestions(questionsFiltered);
+
+    this.setState({
+      q: questionsFiltered,
+    })
+
+    this.props.navigation.navigate('Question', { questionsFiltered });
+  }
+
+  shuffleQuestions = (questions) => {
+    for (let i = questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+    return questions;
+  }
+
   render() {
+    // if (!this.state.start)
     return (
       <View style={styles.container}> 
         <View style={styles.topSection}>
@@ -104,7 +137,7 @@ export default class App extends React.Component {
 
           <View style={styles.buttonSection}>
             <TouchableOpacity
-              onPress={this.onPress}
+              onPress={this.start}
               style={styles.startButton}
             >
               <Text style={styles.tablesBtnText}>Start</Text>
@@ -113,6 +146,10 @@ export default class App extends React.Component {
         </View>
       </View>
     );
+  //   else
+  //     return(
+  //       <Question />
+  //     );
   }
 };
 
