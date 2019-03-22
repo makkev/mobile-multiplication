@@ -38,14 +38,26 @@ export default class App extends React.Component {
     const { questions } = quiz;
 
     // alert(questions);
-    let questionsFiltered = [];
+    // TODO: refactor to use array of tables
+    let tablesArray = [];
     for (var key in tables) {
       if (tables[key] === true) {
-        questions.filter(q => 
-          q.number1 === Number(key) || q.number2 === Number(key)
-        ).forEach(rec => questionsFiltered.push(rec));
+        tablesArray.push(Number(key));
       }
     }
+    let questionsFiltered = [];
+    tablesArray.forEach(num => {
+      questions.filter(q => 
+        q.number1 === num || q.number2 === num
+      ).forEach(rec => questionsFiltered.push(rec));
+    });
+    // for (var key in tables) {
+    //   if (tables[key] === true) {
+    //     questions.filter(q => 
+    //       q.number1 === Number(key) || q.number2 === Number(key)
+    //     ).forEach(rec => questionsFiltered.push(rec));
+    //   }
+    // }
 
     questionsFiltered = this.shuffleQuestions(questionsFiltered);
 
@@ -53,7 +65,10 @@ export default class App extends React.Component {
       q: questionsFiltered,
     })
 
-    this.props.navigation.navigate('Question', { questionsFiltered });
+    this.props.navigation.navigate('Question', {
+      questions: questionsFiltered,
+      tablesArray,
+    });
   }
 
   shuffleQuestions = (questions) => {
@@ -180,10 +195,12 @@ const styles = StyleSheet.create({
   topText: {
     fontSize: 40,
     // color: '#586e75',
-    color: '#268bd2',
+    // color: '#268bd2',
+    color: '#df01c5',
   },
   numberButton: {
-    backgroundColor: '#268bd2',
+    backgroundColor: '#df01c5',
+    // backgroundColor: '#268bd2',
     // backgroundColor: '#cde3f2',
     padding: 10,
     borderRadius: 3,
@@ -193,8 +210,9 @@ const styles = StyleSheet.create({
 
   },
   numberButton2: {
+    backgroundColor: '#edd7ea',
     // backgroundColor: '#268bd2',
-    backgroundColor: '#cde3f2',
+    // backgroundColor: '#cde3f2',
     padding: 10,
     borderRadius: 3,
     height: 50,
@@ -208,7 +226,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   startButton: {
-    backgroundColor: '#268bd2',
+    backgroundColor: '#df01c5',
+    // backgroundColor: '#268bd2',
     padding: 10,
     borderRadius: 2,
     height: 55,
