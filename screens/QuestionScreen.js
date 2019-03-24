@@ -26,11 +26,45 @@ class Question extends Component {
       score: 0,
       time: 0,
       timeInterval: null,
+      answerGiven: '?',
     };
   }
 
-  handlePressNumber = () => {
+  handlePressNumber = (num) => {
+    if (this.state.answerGiven === '?') 
+      this.setState({
+        answerGiven: num,
+      });
+    else
+      // limit the answer given number to hundreds
+      if (this.state.answerGiven.length < 3)
+        this.setState({
+          answerGiven: `${this.state.answerGiven}${num}`,
+        });
+  }
 
+  handleBackSpace = () => {
+    if (this.state.answerGiven !== '?')
+      this.setState({
+        answerGiven: this.state.answerGiven.substring(0, this.state.answerGiven.length - 1),
+      });
+
+    // debugger;
+    // console.log(this.state.answerGiven);
+
+    // if (this.state.answerGiven.length === 1)
+    //   this.setState({
+    //     answerGiven: '?',
+    //   })
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.answerGiven !== prevState.answerGiven) {
+      if (this.state.answerGiven.length === 0)
+        this.setState({
+          answerGiven: '?',
+        });
+    }
   }
 
   render() {
@@ -50,25 +84,29 @@ class Question extends Component {
         */}
         <View style={styles.topSection}>
           <Text style={styles.topText}>
-          {`${question.number1}  x  ${question.number2}  =  `}
+          {`${question.number1}  x  ${question.number2}  =  ${this.state.answerGiven} `}
           </Text>
         </View>
+        {/*
+        <View style={styles.middleSection}>
+        </View>
+        */}
         <View style={styles.bottomSection}> 
           <View style={styles.buttonSection}>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('1')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>1</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('2')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>2</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('3')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>3</Text>
@@ -77,19 +115,19 @@ class Question extends Component {
 
           <View style={styles.buttonSection}>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('4')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>4</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('5')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>5</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('6')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>6</Text>
@@ -98,19 +136,19 @@ class Question extends Component {
 
           <View style={styles.buttonSection}>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('7')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>7</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('8')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>8</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('9')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>9</Text>
@@ -119,7 +157,7 @@ class Question extends Component {
 
           <View style={styles.buttonSection}>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handleBackSpace()}
               style={styles.numberButton}
             >
               <MaterialCommunityIcons
@@ -129,7 +167,7 @@ class Question extends Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.handlePressNumber('0')}
               style={styles.numberButton}
             >
               <Text style={styles.tablesBtnText}>0</Text>
@@ -158,18 +196,27 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topSection: {
-    flexGrow: 5,
+    // flexGrow: 1,
+    flex: 1,
     // backgroundColor: '#5BC2C1',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
 
   },
+  // middleSection: {
+  //   flexGrow: 1,
+  //   backgroundColor: 'orange',
+
+  // }, 
   bottomSection: {
-    flexGrow: 5,
+    // flexGrow: 1,
+    flex: 1,
     flexDirection: 'column',
     // backgroundColor: '#FD909E',
-    // justifyContent: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 5,
+    padding: 2,
     
   },
   topText: {
@@ -184,9 +231,9 @@ const styles = StyleSheet.create({
     // backgroundColor: '#cde3f2',
     padding: 10,
     borderRadius: 3,
-    height: 70,
+    height: 55,
     margin: 4,
-    width: 115,
+    width: 110,
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -218,6 +265,8 @@ const styles = StyleSheet.create({
   },
   buttonSection: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   
 });
