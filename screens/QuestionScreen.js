@@ -26,41 +26,49 @@ class Question extends Component {
       score: 0,
       time: 0,
       timeInterval: null,
-      answerGiven: '?',
+      currentAnswer: '?',
     };
   }
 
   handlePressNumber = (num) => {
-    if (this.state.answerGiven === '?') 
+    if (this.state.currentAnswer === '?') 
       this.setState({
-        answerGiven: num,
+        currentAnswer: num,
       });
     else
       // limit the answer given number to hundreds
-      if (this.state.answerGiven.length < 3)
+      if (this.state.currentAnswer.length < 3)
         this.setState({
-          answerGiven: `${this.state.answerGiven}${num}`,
+          currentAnswer: `${this.state.currentAnswer}${num}`,
         });
   }
 
   handleBackSpace = () => {
-    if (this.state.answerGiven !== '?')
+    if (this.state.currentAnswer !== '?')
       this.setState({
-        answerGiven: this.state.answerGiven.substring(0, this.state.answerGiven.length - 1),
+        currentAnswer: this.state.currentAnswer.substring(0, this.state.currentAnswer.length - 1),
       });
+  }
 
-    // debugger;
-    // console.log(this.state.answerGiven);
-
-    // if (this.state.answerGiven.length === 1)
-    //   this.setState({
-    //     answerGiven: '?',
-    //   })
+  checkAnswer = () => {
+    const { currentAnswer, currentQuestionIndex, answerGiven } = this.state;
+    const { questions } = this.props.navigation.state.params;
+    const correctAnswer = questions[currentQuestionIndex].correctAnswer; 
+    const correct = (Number(currentAnswer) === correctAnswer);
+    this.setState({
+        correctAnswer: correct,
+        incorrectAnswer: !correct,
+        showNextQuestionButton: true,
+        showSubmitButton: false,
+        answerGiven: [ ...answerGiven, currentAnswer ],
+        score: (correct ? this.state.score + 1 : this.state.score)
+    });
+    debugger;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.answerGiven !== prevState.answerGiven) {
-      if (this.state.answerGiven.length === 0)
+    if (this.state.currentAnswer !== prevState.currentAnswer) {
+      if (this.state.currentAnswer.length === 0)
         this.setState({
           answerGiven: '?',
         });
@@ -84,7 +92,7 @@ class Question extends Component {
         */}
         <View style={styles.topSection}>
           <Text style={styles.topText}>
-          {`${question.number1}  x  ${question.number2}  =  ${this.state.answerGiven} `}
+          {`${question.number1}  x  ${question.number2}  =  ${this.state.currentAnswer} `}
           </Text>
         </View>
         {/*
@@ -173,7 +181,7 @@ class Question extends Component {
               <Text style={styles.tablesBtnText}>0</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.handlePressNumber()}
+              onPress={() => this.checkAnswer()}
               style={styles.numberButton}
             >
               <MaterialCommunityIcons
