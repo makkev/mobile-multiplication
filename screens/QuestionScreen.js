@@ -66,6 +66,31 @@ class Question extends Component {
     debugger;
   }
 
+  nextQuestion = (currentQuestionIndex) => {
+    const { questions } = this.props.navigation.state.params;
+    let initState = {
+      incorrectAnswer: false,
+      correctAnswer: false,
+      showNextQuestionButton: false,
+      showSubmitButton: true,
+      answer: '',
+      currentAnswer: '?',
+    }
+    if (currentQuestionIndex + 1 === questions.length) {
+      this.setState({
+        ...initState,
+        endQuiz: true,
+      });
+      // clearInterval(this.interval);
+
+    } else {
+      this.setState({
+        ...initState,
+        currentQuestionIndex: currentQuestionIndex + 1,
+      })
+    }
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.currentAnswer !== prevState.currentAnswer) {
       if (this.state.currentAnswer.length === 0)
@@ -90,108 +115,150 @@ class Question extends Component {
           );
         })}
         */}
+        <View style={styles.headSection}>
+          <Text style={styles.headText}>
+            Score: {score} / {currentQuestionIndex + 1}
+          </Text>
+        </View>
         <View style={styles.topSection}>
           <Text style={styles.topText}>
           {`${question.number1}  x  ${question.number2}  =  ${this.state.currentAnswer} `}
           </Text>
+
         </View>
+
+        <View style={styles.middleSection}>
+          {this.state.correctAnswer &&
+            <View>
+              <Text style={styles.correctText}>
+                Correct
+              </Text>
+            </View>
+          }
+          {this.state.incorrectAnswer &&
+            <View>
+              <Text style={styles.wrongText}>
+                Wrong!
+              </Text>
+              <Text style={styles.wrongText}>
+                The correct answer is {question.correctAnswer}
+              </Text>
+            </View>
+          }
+        </View>
+
         {/*
         <View style={styles.middleSection}>
         </View>
         */}
-        <View style={styles.bottomSection}> 
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('1')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('2')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('3')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>3</Text>
-            </TouchableOpacity>
-          </View>
+        {!this.state.showNextQuestionButton &&
+          <View style={styles.bottomSection}> 
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('1')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>1</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('2')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>2</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('3')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>3</Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('4')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>4</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('5')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>5</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('6')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>6</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('4')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>4</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('5')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>5</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('6')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>6</Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('7')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>7</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('8')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>8</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('9')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>9</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('7')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>7</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('8')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>8</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('9')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>9</Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              onPress={() => this.handleBackSpace()}
-              style={styles.numberButton}
-            >
-              <MaterialCommunityIcons
-                name="backspace"
-                color="white"
-                size={30}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handlePressNumber('0')}
-              style={styles.numberButton}
-            >
-              <Text style={styles.tablesBtnText}>0</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.checkAnswer()}
-              style={styles.numberButton}
-            >
-              <MaterialCommunityIcons
-                name="keyboard-return"
-                color="white"
-                size={30}
-              />
-            </TouchableOpacity>
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                onPress={() => this.handleBackSpace()}
+                style={styles.numberButton}
+              >
+                <MaterialCommunityIcons
+                  name="backspace"
+                  color="white"
+                  size={30}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.handlePressNumber('0')}
+                style={styles.numberButton}
+              >
+                <Text style={styles.tablesBtnText}>0</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.checkAnswer()}
+                style={styles.numberButton}
+              >
+                <MaterialCommunityIcons
+                  name="keyboard-return"
+                  color="white"
+                  size={30}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        }
+
+        {this.state.showNextQuestionButton &&
+          <View style={styles.bottomSection}> 
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                onPress={() => this.nextQuestion(currentQuestionIndex)}
+                style={styles.startButton}
+              >
+                <Text style={styles.tablesBtnText}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
 
       </View>
     )
@@ -203,35 +270,64 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  topSection: {
-    // flexGrow: 1,
+  headSection: {
+    // flexGrow: 5,
     flex: 1,
+    // backgroundColor: '#5BC2C1',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    padding: 5,
+
+  },
+  topSection: {
+    // flexGrow: 5,
+    flex: 5,
     // backgroundColor: '#5BC2C1',
     alignItems: 'center',
     justifyContent: 'center',
 
   },
-  // middleSection: {
-  //   flexGrow: 1,
-  //   backgroundColor: 'orange',
+  middleSection: {
+    flex: 2,
+    // flexGrow: 3,
+    // backgroundColor: 'orange',
+    padding: 5,
 
-  // }, 
+  }, 
   bottomSection: {
-    // flexGrow: 1,
-    flex: 1,
+    // flexGrow: 5,
+    flex: 5,
     flexDirection: 'column',
     // backgroundColor: '#FD909E',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     // padding: 5,
     padding: 2,
     
+  },
+  headText: {
+    fontSize: 15,
+    // color: '#586e75',
+    // color: '#268bd2',
+    color: '#df01c5',
   },
   topText: {
     fontSize: 55,
     // color: '#586e75',
     // color: '#268bd2',
     color: '#df01c5',
+  },
+  correctText: {
+    fontSize: 30,
+    // color: '#586e75',
+    // color: '#268bd2',
+    color: '#2e8ccf',
+  },
+  wrongText: {
+    fontSize: 30,
+    // color: '#586e75',
+    // color: '#268bd2',
+    color: '#da3435',
   },
   numberButton: {
     backgroundColor: '#df01c5',
