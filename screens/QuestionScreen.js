@@ -104,164 +104,172 @@ class Question extends Component {
     const { questions, tablesArray } = this.props.navigation.state.params;
     const { score, answer, time, currentQuestionIndex } = this.state;
     let question = questions[currentQuestionIndex];
-    return (
-      <View style={styles.container}>
-        {/*
-        {questions.map((q, idx) => {
-          return(
-            <View key={idx}>
-              <Text>{`${q.number1} ${q.operand} ${q.number2} = ${q.correctAnswer}`}</Text>
-            </View>
-          );
-        })}
-        */}
-        <View style={styles.headSection}>
-          <Text style={styles.headText}>
-            Score: {score} / {currentQuestionIndex + 1}
-          </Text>
-        </View>
-        <View style={styles.topSection}>
-          <Text style={styles.topText}>
-          {`${question.number1}  x  ${question.number2}  =  ${this.state.currentAnswer} `}
-          </Text>
+    if (!this.state.endQuiz)
+      return (
+        <View style={styles.container}>
+          {/*
+          {questions.map((q, idx) => {
+            return(
+              <View key={idx}>
+                <Text>{`${q.number1} ${q.operand} ${q.number2} = ${q.correctAnswer}`}</Text>
+              </View>
+            );
+          })}
+          */}
+          <View style={styles.headSection}>
+            <Text style={styles.headText}>
+              Score: {score} / {currentQuestionIndex + 1}
+            </Text>
+          </View>
+          <View style={styles.topSection}>
+            <Text style={styles.topText}>
+            {`${question.number1}  x  ${question.number2}  =  ${this.state.currentAnswer} `}
+            </Text>
 
-        </View>
+          </View>
 
-        <View style={styles.middleSection}>
-          {this.state.correctAnswer &&
-            <View>
-              <Text style={styles.correctText}>
-                Correct
-              </Text>
+          <View style={styles.middleSection}>
+            {this.state.correctAnswer &&
+              <View>
+                <Text style={styles.correctText}>
+                  Correct
+                </Text>
+              </View>
+            }
+            {this.state.incorrectAnswer &&
+              <View>
+                <Text style={styles.wrongText}>
+                  Wrong!
+                </Text>
+                <Text style={styles.wrongText}>
+                  The correct answer is {question.correctAnswer}
+                </Text>
+              </View>
+            }
+          </View>
+
+          {/*
+          <View style={styles.middleSection}>
+          </View>
+          */}
+          {!this.state.showNextQuestionButton &&
+            <View style={styles.bottomSection}> 
+              <View style={styles.buttonSection}>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('1')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>1</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('2')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>2</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('3')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>3</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.buttonSection}>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('4')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>4</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('5')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>5</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('6')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>6</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.buttonSection}>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('7')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>7</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('8')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>8</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('9')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>9</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.buttonSection}>
+                <TouchableOpacity
+                  onPress={() => this.handleBackSpace()}
+                  style={styles.numberButton}
+                >
+                  <MaterialCommunityIcons
+                    name="backspace"
+                    color="white"
+                    size={30}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.handlePressNumber('0')}
+                  style={styles.numberButton}
+                >
+                  <Text style={styles.tablesBtnText}>0</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.checkAnswer()}
+                  style={styles.numberButton}
+                >
+                  <MaterialCommunityIcons
+                    name="keyboard-return"
+                    color="white"
+                    size={30}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           }
-          {this.state.incorrectAnswer &&
-            <View>
-              <Text style={styles.wrongText}>
-                Wrong!
-              </Text>
-              <Text style={styles.wrongText}>
-                The correct answer is {question.correctAnswer}
-              </Text>
+
+          {this.state.showNextQuestionButton &&
+            <View style={styles.bottomSection}> 
+              <View style={styles.buttonSection}>
+                <TouchableOpacity
+                  onPress={() => this.nextQuestion(currentQuestionIndex)}
+                  style={styles.startButton}
+                >
+                  <Text style={styles.tablesBtnText}>Next</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           }
+
         </View>
-
-        {/*
-        <View style={styles.middleSection}>
+      )
+    else
+      return(
+        <View>
+          <Text>Score: {score} / {questions.length}</Text>
         </View>
-        */}
-        {!this.state.showNextQuestionButton &&
-          <View style={styles.bottomSection}> 
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('1')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>1</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('2')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>2</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('3')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>3</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('4')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>4</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('5')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>5</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('6')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>6</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('7')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>7</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('8')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>8</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('9')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>9</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                onPress={() => this.handleBackSpace()}
-                style={styles.numberButton}
-              >
-                <MaterialCommunityIcons
-                  name="backspace"
-                  color="white"
-                  size={30}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.handlePressNumber('0')}
-                style={styles.numberButton}
-              >
-                <Text style={styles.tablesBtnText}>0</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.checkAnswer()}
-                style={styles.numberButton}
-              >
-                <MaterialCommunityIcons
-                  name="keyboard-return"
-                  color="white"
-                  size={30}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-
-        {this.state.showNextQuestionButton &&
-          <View style={styles.bottomSection}> 
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                onPress={() => this.nextQuestion(currentQuestionIndex)}
-                style={styles.startButton}
-              >
-                <Text style={styles.tablesBtnText}>Next</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-
-      </View>
-    )
+      )
+  
   }
 }
 
