@@ -9,6 +9,7 @@ import {
   Button,
   Image,
   ImageBackground } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 class Question extends Component {
@@ -90,6 +91,30 @@ class Question extends Component {
       })
     }
   }
+
+  renderResults = () => {
+    const { questions, tablesArray } = this.props.navigation.state.params;
+    const { answerGiven } = this.state;
+    return questions.map((q, idx) => 
+      <View styles={styles.resultsColumn} key={idx+1}>
+        <View style={styles.resultsRow}>
+          <Text style={styles.colQnum}>({idx+1})</Text>
+          <Text style={styles.colNum}>{q.number1}</Text>
+          <Text style={styles.colOperand}>x</Text>
+          <Text style={styles.colNum}>{q.number2}</Text>
+          <Text style={styles.colOperand}>=</Text>
+          <Text style={styles.colAnswer}>{q.correctAnswer}</Text>
+          <Text style={styles.colText}> 
+            - You answered {answerGiven[idx]} -
+          </Text>
+          <Text style={q.correctAnswer === Number(answerGiven[idx]) ? styles.correctStyle : styles.wrongStyle }>
+            {q.correctAnswer === Number(answerGiven[idx]) ? ' Correct' : ' Wrong'}
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.currentAnswer !== prevState.currentAnswer) {
@@ -264,10 +289,16 @@ class Question extends Component {
         </View>
       )
     else
+      // end quiz
       return(
-        <View>
+        <ScrollView>
           <Text>Score: {score} / {questions.length}</Text>
-        </View>
+          <Text>Tables: [
+            {tablesArray.map((r, idx) => idx === (tablesArray.length - 1) ? r : r + ', ')}
+            ]
+          </Text>
+          {this.renderResults()}
+        </ScrollView>
       )
   
   }
@@ -380,7 +411,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
+  resultsColumn: {
+    flexDirection: 'column',
+
+  },
+  resultsRow: {
+    flexDirection: 'row',
+    // justifyContent: 'flex-start',
+  },
+  colQnum: {
+    width: 35,
+    // justifyContent: 'flex-start',
+    // alignItems: 'flex-start',
+    textAlign: 'right',
+  },
+  colNum: {
+    width: 20,
+    // justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
+    textAlign: 'right',
+  },
+  colOperand: {
+    width: 15,
+    // justifyContent: 'flex-end',
+    textAlign: 'right',
+  },
+  colAnswer: {
+    width: 35,
+    textAlign: 'right',
+    // justifyContent: 'flex-end',
+    // padding: 10,
+    paddingRight: 5,
+  },
+  colText: {
+    // width: 200,
+    textAlign: 'left',
+    // justifyContent: 'flex-start',
+  },
+  correctStyle: {
+    color: '#2e8ccf',
+    // textAlign: 'left',
+  },
+  wrongStyle: {
+    color: '#da3435',
+    // textAlign: 'left',
+  }
 });
 
 export default Question
