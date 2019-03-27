@@ -79,6 +79,21 @@ export default class App extends React.Component {
     return questions;
   }
 
+  tablesSelected = () => {
+    const { tables } = this.state;
+    return (
+      tables[2] ||
+      tables[3] ||
+      tables[4] ||
+      tables[5] ||
+      tables[6] ||
+      tables[7] ||
+      tables[8] ||
+      tables[9] ||
+      tables[12] 
+    );
+  }
+
   render() {
     // if (!this.state.start)
     return (
@@ -150,14 +165,16 @@ export default class App extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              onPress={this.start}
-              style={styles.startButton}
-            >
-              <Text style={styles.tablesBtnText}>Start</Text>
-            </TouchableOpacity>
-          </View>
+          {this.tablesSelected() &&
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                onPress={this.start}
+                style={styles.startButton}
+              >
+                <Text style={styles.tablesBtnText}>Start</Text>
+              </TouchableOpacity>
+            </View>
+          }
         </View>
       </View>
     );

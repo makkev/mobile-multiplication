@@ -31,6 +31,17 @@ class Question extends Component {
     };
   }
 
+  componentDidMount() {
+    if (!this.state.endQuiz)
+      this.interval = setInterval(this.incrementTime, 1000);
+  }
+
+  incrementTime = () => {
+    this.setState({
+      time: this.state.time + 1,
+    })
+  }
+
   handlePressNumber = (num) => {
     if (this.state.currentAnswer === '?') 
       this.setState({
@@ -82,7 +93,7 @@ class Question extends Component {
         ...initState,
         endQuiz: true,
       });
-      // clearInterval(this.interval);
+      clearInterval(this.interval);
 
     } else {
       this.setState({
@@ -115,7 +126,6 @@ class Question extends Component {
     );
   }
 
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.currentAnswer !== prevState.currentAnswer) {
       if (this.state.currentAnswer.length <= 0)
@@ -142,9 +152,14 @@ class Question extends Component {
           })}
           */}
           <View style={styles.headSection}>
-            <Text style={styles.headText}>
-              Score: {score} / {currentQuestionIndex + 1}
-            </Text>
+            <View style={styles.headSectionRow}>
+              <Text style={styles.headTextLeft}>
+                Score: {score} / {currentQuestionIndex + 1}
+              </Text>
+              <Text style={styles.headTextRight}>
+                Time: {time}s
+              </Text>
+            </View>
           </View>
           <View style={styles.topSection}>
             <Text style={styles.topText}>
@@ -293,6 +308,7 @@ class Question extends Component {
       return(
         <ScrollView>
           <Text>Score: {score} / {questions.length}</Text>
+          <Text>Time: {time} seconds</Text>
           <Text>Tables: [
             {tablesArray.map((r, idx) => idx === (tablesArray.length - 1) ? r : r + ', ')}
             ]
@@ -317,6 +333,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 5,
 
+  },
+  headSectionRow: {
+    flexDirection: 'row',
+    // alignItems: 'space-evenly',
+    // justifyContent: 'flex-end',
   },
   topSection: {
     // flexGrow: 5,
@@ -344,11 +365,24 @@ const styles = StyleSheet.create({
     padding: 2,
     
   },
-  headText: {
-    fontSize: 15,
+  headTextLeft: {
+    fontSize: 20,
     // color: '#586e75',
     // color: '#268bd2',
     color: '#df01c5',
+    // alignItems: 'flex-start',
+    // justifyContent: 'flex-start',
+    // width: 10,
+    paddingRight: 30,
+  },
+  headTextRight: {
+    fontSize: 20,
+    // color: '#586e75',
+    // color: '#268bd2',
+    color: '#df01c5',
+    // alignItems: 'flex-end',
+    // justifyContent: 'flex-end',
+    // width: 10,
   },
   topText: {
     fontSize: 55,
