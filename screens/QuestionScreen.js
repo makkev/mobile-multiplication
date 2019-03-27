@@ -48,7 +48,7 @@ class Question extends Component {
     if (this.state.currentAnswer !== '?')
       this.setState({
         currentAnswer: this.state.currentAnswer.substring(0, this.state.currentAnswer.length - 1),
-      });
+      })
   }
 
   checkAnswer = () => {
@@ -118,9 +118,9 @@ class Question extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.currentAnswer !== prevState.currentAnswer) {
-      if (this.state.currentAnswer.length === 0)
+      if (this.state.currentAnswer.length <= 0)
         this.setState({
-          answerGiven: '?',
+          currentAnswer: '?',
         });
     }
   }
