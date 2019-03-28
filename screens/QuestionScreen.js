@@ -42,6 +42,10 @@ class Question extends Component {
     })
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   handlePressNumber = (num) => {
     if (this.state.currentAnswer === '?') 
       this.setState({
