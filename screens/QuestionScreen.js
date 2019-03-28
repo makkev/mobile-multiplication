@@ -166,6 +166,9 @@ class Question extends Component {
             </View>
           </View>
           <View style={styles.topSection}>
+            <Text>
+            {currentQuestionIndex + 1}/{questions.length + 1}
+            </Text>
             <Text style={styles.topText}>
             {`${question.number1}  x  ${question.number2}  =  ${this.state.currentAnswer} `}
             </Text>
