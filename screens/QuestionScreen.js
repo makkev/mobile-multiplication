@@ -26,6 +26,7 @@ class Question extends Component {
       showSubmitButton: true,
       score: 0,
       time: 0,
+      renderedTime: 0,
       timeInterval: null,
       currentAnswer: '?',
     };
@@ -39,6 +40,9 @@ class Question extends Component {
   incrementTime = () => {
     this.setState({
       time: this.state.time + 1,
+    })
+    this.setState({
+      renderedTime: this.renderTime(this.state.time),
     })
   }
 
@@ -139,9 +143,15 @@ class Question extends Component {
     }
   }
 
+  renderTime(seconds) {
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 3600 % 60);
+    return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
   render() {
     const { questions, tablesArray } = this.props.navigation.state.params;
-    const { score, answer, time, currentQuestionIndex } = this.state;
+    const { score, answer, time, currentQuestionIndex, renderedTime} = this.state;
     let question = questions[currentQuestionIndex];
     if (!this.state.endQuiz)
       return (
@@ -161,13 +171,13 @@ class Question extends Component {
                 Score: {score} / {currentQuestionIndex + 1}
               </Text>
               <Text style={styles.headTextRight}>
-                Time: {time}s
+                Time: {renderedTime}
               </Text>
             </View>
           </View>
           <View style={styles.topSection}>
-            <Text>
-            {currentQuestionIndex + 1}/{questions.length + 1}
+            <Text style={styles.headTextLeft}>
+            Q {currentQuestionIndex + 1}/{questions.length + 1}
             </Text>
             <Text style={styles.topText}>
             {`${question.number1}  x  ${question.number2}  =  ${this.state.currentAnswer} `}
@@ -315,7 +325,7 @@ class Question extends Component {
       return(
         <ScrollView>
           <Text>Score: {score} / {questions.length}</Text>
-          <Text>Time: {time} seconds</Text>
+          <Text>Time: {renderedTime} </Text>
           <Text>Tables: [
             {tablesArray.map((r, idx) => idx === (tablesArray.length - 1) ? r : r + ', ')}
             ]
@@ -443,7 +453,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#268bd2',
     padding: 10,
     borderRadius: 2,
-    height: 55,
+    height: 65,
     margin: 4,
     width: 360,
   },

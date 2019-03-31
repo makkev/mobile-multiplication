@@ -191,7 +191,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topSection: {
-    flexGrow: 3,
+    // flexGrow: 3,
+    flex: 2,
     // backgroundColor: '#5BC2C1',
     alignItems: 'center',
     justifyContent: 'center',
@@ -202,7 +203,8 @@ const styles = StyleSheet.create({
   //   backgroundColor: '#FFF',
   // },
   bottomSection: {
-    flexGrow: 4,
+    // flexGrow: 4,
+    flex: 3,
     flexDirection: 'column',
     // backgroundColor: '#FD909E',
     // justifyContent: 'center',
